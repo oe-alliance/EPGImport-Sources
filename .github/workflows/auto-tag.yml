@@ -1,0 +1,42 @@
+name: Auto Tag by Commit Date
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  auto-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Get commit date and format tag
+        id: get-tag
+        run: |
+          COMMIT_SHA=$(git rev-parse HEAD)
+          COMMIT_DATE=$(git show -s --format=%cd --date=format:'%Y%m%d' "$COMMIT_SHA")
+          echo "tag=$COMMIT_DATE" >> $GITHUB_OUTPUT
+
+      - name: Check if tag exists
+        id: tag-check
+        run: |
+          TAG_NAME=${{ steps.get-tag.outputs.tag }}
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create and push tag
+        if: steps.tag-check.outputs.exists == 'false'
+        run: |
+          TAG_NAME=${{ steps.get-tag.outputs.tag }}
+          git tag "$TAG_NAME"
+          git push origin "$TAG_NAME"
