@@ -107,8 +107,8 @@ The description must be unique for each source, and is displayed on the UI.
 			<url>http://runigma.com.ua/EPG/SAT/epg-sat.xml.gz</url>
 		</source>
 
-		<source type="gen_xmltv" nocheck="1" channels="http://runigma.com.ua/EPG/SAT/channels-852E.xml.gz">
-			<description>(epg by Igor@K-runigma)- Intelsat15 85.2E</description>
+		<source type="gen_xmltv" nocheck="1" channels="http://runigma.com.ua/EPG/SAT/channels-800E.xml.gz">
+			<description>(epg by Igor@K-runigma)- Express 80.0°E</description>
 			<url>http://runigma.com.ua/EPG/SAT/epg-sat.xml.gz</url>
 		</source>
 
